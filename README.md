@@ -1,5 +1,5 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
-<a name="readme-top"></a>
+<a name="RIZUMU"></a>
 <!--
 *** Thanks for checking out the Best-README-Template. If you have a suggestion
 *** that would make this better, please fork the repo and create a pull request
@@ -18,20 +18,16 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-
-<!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <img src="images/mooscless.png" alt="Logo" width="80" height="80">
+  <img src="images/rizumu-logo.png" alt="Logo" width="80" height="80">
 
-<h3 align="center">project_title</h3>
+<h3 align="center">Rizumu</h3>
 
   <p align="center">
     Mooscles! It helps you track your BMI, log your workouts, and keep tabs on what you eat.
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -52,17 +48,35 @@
 <!-- Screenshots -->
 ## ScreenShots
 
-<img src="images/landingpage.png">
-<img src="images/register.png">
-<img src="images/login.png">
-<img src="images/dashboard user.png">
-<img src="images/download & playback.png">
-<img src="images/create playlist.png">
-<img src="images/play playlist.png">
-<img src="images/dashboard admin.png">
-<img src="images/add song.png">
-<img src="images/edit song.png">
-<img src="images/delete song.png">
+<div align="center">
+  <img src="images/landingpage.png" alt="Landing Page" width="400" />
+  <img src="images/register.png" alt="Register Page" width="400" />
+</div>
+<div align="center">
+  <img src="images/login.png" alt="Login Page" width="400" />
+</div>
+User:
+<div align="center">
+  <img src="images/login.png" alt="Login Page" width="400" />
+  <img src="images/dashboard user.png" alt="User Dashboard" width="400" />
+</div>
+<div align="center">
+  <img src="images/download & playback.png" alt="Download & Playback" width="400" />
+  <img src="images/create playlist.png" alt="Create Playlist" width="400" />
+</div>
+<div align="center">
+  <img src="images/play playlist.png" alt="Play Playlist" width="400" />
+</div>
+Admin:
+<div align="center">
+  <img src="images/dashboard admin.png" alt="Admin Dashboard" width="400" />
+  <img src="images/add song.png" alt="Add Song" width="400" />
+</div>
+
+<div align="center">
+  <img src="images/edit song.png" alt="Edit Song" width="400" />
+  <img src="images/delete song.png" alt="Delete Song" width="400" />
+</div>
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -70,25 +84,15 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
-
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
+Aplikasi Rizumu dibangun dengan menggunakan sejumlah teknologi modern, termasuk Laravel sebagai framework utama, serta HTML, CSS, dan JavaScript untuk pengembangan antarmuka pengguna yang responsif dan menarik. Bagian logika aplikasi ditangani oleh bahasa pemrograman PHP, dengan MySQL sebagai basis data utama untuk menyimpan dan mengelola informasi terkait musik, pengguna, dan lainnya. Dengan menggunakan kombinasi teknologi ini, kami berusaha memberikan pengalaman pemutar musik yang memuaskan dan dapat diandalkan kepada pengguna kami.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 ### Built With
-* Netbeans
-* Java
+* Laravel
+* Javascript, blade, HTML, CSS
 * MySQL
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

@@ -1,0 +1,487 @@
+1. Model -> Mahasiswa
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Mahasiswa extends Model
+{
+    use HasFactory;
+    protected $table = 'mahasiswa';
+    protected $primarykey = 'id';
+    protected $fillable = [
+        'id',
+        'nama',
+        'nim',
+        'umur',
+        'kelas',
+    ];
+}
+
+
+2. MahasiswaController
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Models\Mahasiswa;
+
+class MahasiswaController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $data['judul'] = 'Mahasiswa';
+        $data['class'] = 'mahasiswa';
+        $data['subclass'] = 'mahsiswa';
+        $data['q'] = Mahasiswa::all();
+        return view('admin.mahasiswa.index', $data);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $data['judul'] = 'Tambah Mahasiswa';
+        $data['class'] = 'mahasiswa';
+        $data['subclass'] = 'mahsiswa';
+        return view('admin.mahasiswa.create', $data);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'nim' => 'required',
+            'umur' => 'required',
+            'kelas' => 'required',
+        ]);
+
+        Mahasiswa::create([
+            'nama' => $request->nama,
+            'nim' => $request->nim,
+            'umur' => $request->umur,
+            'kelas' => $request->kelas,
+        ]);
+
+        return redirect()->route('admin.mahasiswa')->with('succes','Data Berhasil di Input');
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $data['judul'] = 'Edit Mahasiswa';
+        $data['class'] = 'mahasiswa';
+        $data['subclass'] = 'mahsiswa';
+        $data['row'] = Mahasiswa::find($id);
+        return view('admin.mahasiswa.edit', $data);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'nim' => 'required',
+            'umur' => 'required',
+            'kelas' => 'required',
+        ]);
+
+        $aksi = Mahasiswa::find($id);
+        $aksi->nama = request('nama');
+        $aksi->nim = request('nim');
+        $aksi->umur = request('umur');
+        $aksi->kelas = request('kelas');
+        $aksi->save();
+
+        return redirect()->route('admin.mahasiswa')->with('succes','Data Berhasil di Update');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $aksi = Mahasiswa::find($id);
+        $aksi->delete();
+        return redirect()->route('admin.mahasiswa')->with('succes','Data Berhasil di Hapus');
+    }
+}
+
+3. View -> mahasiswa
+
+- index.blade.php
+
+@extends('admin/panel')
+
+@section('content')
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0"><?php echo $judul ?></h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin/mahasiswa">Home</a></li>
+                        <li class="breadcrumb-item active"><?php echo $judul ?></li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Info boxes -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title"><?php echo $judul ?></h5>
+
+                            <div class="card-tools">
+
+                                <a class="btn btn-tool" href="{{ Route ('admin.mahasiswa.create')}}"> <i
+                                        class="fas fa-plus"> </i> Add </a>
+
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table id="myTable" class="table table-striped display nowrap compact"
+                                        style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th width="5%" style="text-align: center;">Nama</th>
+                                                <th width="10%" style="text-align: center;">NIM</th>
+                                                <th width="10%" style="text-align: center;">Umur</th>
+                                                <th width="10%" style="text-align: center;">Kelas</th>
+                                                <th style="text-align:center" width="15%">Opsi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach($q as $dt): ?>
+                                            <tr>
+                                                <td style="text-align: center;"><?= $dt->nama ?></td>
+                                                <td style="text-align: center;"><?= $dt->nim ?></td>
+                                                <td style="text-align: center;"><?= $dt->umur ?> Tahun</td>
+                                                <td style="text-align: center;"><?= $dt->kelas ?></td>
+                                                <td style="text-align: center;">
+                                                    <form action="{{ Route('admin.mahasiswa.destroy', $dt->id)}}" method="POST">
+                                                        <a class="btn btn-info btn-xs" href="{{ Route('admin.mahasiswa.edit', $dt->id) }}"><i
+                                                                class="fas fa-pencil-alt"> </i> Edit</a>
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-xs"
+                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"><i
+                                                                class="fas fa-trash"> </i> Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <?php endforeach ?>
+                                        </tbody>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- ./card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+
+        </div>
+        <!--/. container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+@endsection
+
+- create.blade.php
+
+@extends('admin/panel')
+   
+@section('content')
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1 class="m-0"><?php echo $judul ?></h1>
+			</div><!-- /.col -->
+			<div class="col-sm-6">
+				<ol class="breadcrumb float-sm-right">
+				<li class="breadcrumb-item"><a href="/admin/mahasiswa">Home</a></li>
+				<li class="breadcrumb-item active"><?php echo $judul ?></li>
+				</ol>
+			</div><!-- /.col -->
+			</div><!-- /.row -->
+		</div><!-- /.container-fluid -->
+		</div>
+		<!-- /.content-header -->
+
+		<!-- Main content -->
+		<section class="content">
+		<div class="container-fluid">
+			<!-- Info boxes -->
+      <div class="row">
+			<div class="col-md-12">
+				<div class="card">
+				<div class="card-header">
+					<h5 class="card-title"><?php echo $judul ?></h5>
+
+					<div class="card-tools">
+					
+          <a class="btn btn-tool" href="{{route('admin.mahasiswa')}}"> <i class="fas fa-undo"> </i> Back </a>  
+
+          <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+					</div>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body">
+					<div class="row">
+					
+					<div class="col-md-3"></div>
+					
+					<div class="col-md-6">
+						<form class="form-horizontal" action="{{ route('admin.mahasiswa.store') }}" method="POST" enctype="multipart/form-data">
+						@csrf
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label">Nama</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" name="nama" placeholder="Nama">
+							</div>
+						</div>
+
+                        <div class="form-group row">
+							<label class="col-sm-3 col-form-label">NIM</label>
+							<div class="col-sm-9">
+								<input type="number" class="form-control" name="nim" placeholder="NIM">
+							</div>
+						</div>
+
+                        <div class="form-group row">
+							<label class="col-sm-3 col-form-label">Umur</label>
+							<div class="col-sm-9">
+								<input type="number" class="form-control" name="umur" placeholder="Umur">
+							</div>
+						</div>
+
+                        <div class="form-group row">
+							<label class="col-sm-3 col-form-label">Kelas</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" name="kelas" placeholder="Kelas">
+							</div>
+						</div>
+
+						<center>
+						<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+						</center>
+						</form>
+					</div>
+
+					<div class="col-md-3"></div>
+					<!-- /.col -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- ./card-body -->
+				</div>
+				<!-- /.card -->
+			</div>
+			<!-- /.col -->
+			</div>
+			<!-- /.row -->
+
+		</div><!--/. container-fluid -->
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- /.content-wrapper -->
+
+@endsection
+
+- edit.blade.php
+
+@extends('admin/panel')
+   
+@section('content')
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1 class="m-0"><?php echo $judul ?></h1>
+			</div><!-- /.col -->
+			<div class="col-sm-6">
+				<ol class="breadcrumb float-sm-right">
+				<li class="breadcrumb-item"><a href="#">Home</a></li>
+				<li class="breadcrumb-item active"><?php echo $judul ?></li>
+				</ol>
+			</div><!-- /.col -->
+			</div><!-- /.row -->
+		</div><!-- /.container-fluid -->
+		</div>
+		<!-- /.content-header -->
+
+		<!-- Main content -->
+		<section class="content">
+		<div class="container-fluid">
+			<!-- Info boxes -->
+      <div class="row">
+			<div class="col-md-12">
+				<div class="card">
+				<div class="card-header">
+					<h5 class="card-title"><?php echo $judul ?></h5>
+
+					<div class="card-tools">
+					
+          <a class="btn btn-tool" href="{{route('admin.mahasiswa')}}"> <i class="fas fa-undo"> </i> Back </a>  
+
+          <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+		  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+					</div>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body">
+					<div class="row">
+					
+					<div class="col-md-3"></div>
+					
+					<div class="col-md-6">
+						<form class="form-horizontal" action="{{ route('admin.mahasiswa.update',$row->id) }}" method="POST" enctype="multipart/form-data">
+						@csrf
+						@method('PUT')
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label">Nama</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" name="nama" value="{{ old('nama', $row->nama) }}" placeholder="Nama">
+							</div>
+						</div>
+
+                        <div class="form-group row">
+							<label class="col-sm-3 col-form-label">NIM</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" name="nim" value="{{ old('nim', $row->nim) }}" placeholder="NIM">
+							</div>
+						</div>
+
+                        <div class="form-group row">
+							<label class="col-sm-3 col-form-label">Umur</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" name="umur" value="{{ old('umur', $row->umur) }}" placeholder="Umur">
+							</div>
+						</div>
+
+                        <div class="form-group row">
+							<label class="col-sm-3 col-form-label">Kelas</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" name="kelas" value="{{ old('kelas', $row->kelas) }}" placeholder="Kelas">
+							</div>
+						</div>
+
+						<center>
+						<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Update</button>
+						</center>
+						</form>
+					</div>
+
+					<!-- /.col -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- ./card-body -->
+				</div>
+				<!-- /.card -->
+			</div>
+			<!-- /.col -->
+			</div>
+			<!-- /.row -->
+
+		</div><!--/. container-fluid -->
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- /.content-wrapper -->
+
+@endsection
+
+4. Routing
+
+// Routing Admin Mahasiswa
+Route::get('/admin/mahasiswa', [App\Http\Controllers\MahasiswaController::class, 'index'])->name('admin.mahasiswa')->middleware('is_admin');
+Route::get('/admin/mahasiswa/create', [App\Http\Controllers\MahasiswaController::class, 'create'])->name('admin.mahasiswa.create')->middleware('is_admin');
+Route::post('/admin/mahasiswa/store', [App\Http\Controllers\MahasiswaController::class, 'store'])->name('admin.mahasiswa.store')->middleware('is_admin');
+Route::get('/admin/mahasiswa/{id}/edit', [App\Http\Controllers\MahasiswaController::class, 'edit'])->name('admin.mahasiswa.edit')->middleware('is_admin');
+Route::put('/admin/mahasiswa/{id}/edit', [App\Http\Controllers\MahasiswaController::class, 'update'])->name('admin.mahasiswa.update')->middleware('is_admin');
+Route::delete('/admin/mahasiswa/{id}/destroy', [App\Http\Controllers\MahasiswaController::class, 'destroy'])->name('admin.mahasiswa.destroy')->middleware('is_admin');
